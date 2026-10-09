@@ -21,6 +21,14 @@ const categories = [
   { name: "মসলা", icon: "🌶️", href: "/category/spices" },
 ];
 
+const marketPrices = [
+  { name: "স্বর্ণালি চাল", price: 48, unit: "কেজি", change: 2.5 },
+  { name: "মিনিকেট চাল", price: 90, unit: "কেজি", change: -2.0 },
+  { name: "বাটার মসুর", price: 118, unit: "কেজি", change: 1.2 },
+  { name: "ফার্ম ডিম", price: 48, unit: "হালি", change: 2.5 },
+  { name: "ভোলা", price: 120, unit: "কেজি", change: -1.4 },
+  { name: "আলুর ডাল", price: 80, unit: "কেজি", change: 0 },
+];
 
 const Navbar = () => {
   const today = new Date().toLocaleDateString("bn-BD", {
