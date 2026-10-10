@@ -1,16 +1,23 @@
-import { getCatalog } from "@/lib/catalog";
+import Link from "next/link";
 
-export const runtime = "nodejs";
+const NotFound = () => {
+  return (
+    <div className="wrap flex min-h-[60vh] flex-col items-center justify-center py-16 text-center">
+      <p className="text-7xl font-bold text-brand">404</p>
 
-export const GET = async () => {
-  try {
-    const catalog = await getCatalog();
+      <h1 className="mt-5 text-2xl font-bold">
+        পেজ অথবা পণ্য পাওয়া যায়নি
+      </h1>
 
-    return Response.json(catalog);
-  } catch {
-    return Response.json(
-      { message: "পণ্যের তথ্য লোড করা যাচ্ছে না।" },
-      { status: 502 }
-    );
-  }
+      <p className="mt-3 max-w-md text-sm leading-7 text-gray-500">
+        আপনি যে পেজটি খুঁজছেন সেটি নেই, অথবা ঠিকানাটি সঠিক নয়।
+      </p>
+
+      <Link href="/" className="btn btn-brand mt-6">
+        হোম পেজে ফিরে যান
+      </Link>
+    </div>
+  );
 };
+
+export default NotFound;
