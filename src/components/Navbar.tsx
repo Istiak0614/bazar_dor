@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 import { authClient } from "@/lib/auth-client";
 import { categories } from "@/lib/categories";
@@ -10,54 +10,68 @@ import { banglaDate } from "@/lib/format";
 import ReservedImage from "@/components/ReservedImage";
 import SignOutButton from "@/components/SignOutButton";
 
+const subscribeDate = () => {
+  return () => {};
+};
+
+const getServerDate = () => "";
+
 const Navbar = () => {
   const pathname = usePathname();
   const { data: session, isPending } = authClient.useSession();
-  const [date, setDate] = useState("");
 
-  useEffect(() => {
-    setDate(banglaDate());
-  }, []);
+  const date = useSyncExternalStore(
+    subscribeDate,
+    banglaDate,
+    getServerDate,
+  );
 
   return (
-    <header className="border-b border-[#dfe8e0] bg-[#fbfdfb]">
-      <div className="wrap flex min-h-20 items-center justify-between gap-3 py-3">
+    <header className="bz-navbar">
+      <div className="wrap bz-navbar-top">
         <Link href="/" className="flex shrink-0 items-center gap-2">
-          <ReservedImage
-            src="/images/logo.png"
-            alt="বাজার দর লোগো"
-            width={44}
-            height={44}
-            fallback="🛒"
-            className="h-11 w-11 object-contain"
-          />
+  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#008d3f]">
+    <ReservedImage
+      src="/image/logo-icon.png"
+      alt="বাজার দর লোগো"
+      width={24}
+      height={24}
+      fallback="🛒"
+      className="h-6 w-6 object-contain brightness-0 invert"
+    />
+  </div>
 
-          <div>
-            <p className="text-lg font-bold leading-tight">বাজার দর</p>
-            <p className="mt-1 min-h-4 text-[10px] text-gray-500 sm:text-xs">
-              {date || "বাংলাদেশের বাজারের দাম"}
-            </p>
-          </div>
-        </Link>
+  <div>
+    <p className="text-sm font-bold leading-tight text-[#202a22]">
+      বাজার দর
+    </p>
+
+    <p className="mt-1 min-h-3 text-[10px] leading-tight text-[#6b756c]">
+      {date}
+    </p>
+  </div>
+</Link>
 
         {isPending ? (
-          <div className="skeleton h-9 w-28" />
+          <div className="skeleton h-8 w-24" />
         ) : session ? (
           <details className="dropdown dropdown-end">
-            <summary className="btn btn-sm border-green-100 bg-white">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100 text-brand">
+            <summary className="btn btn-ghost btn-sm">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-green-100 text-brand">
                 {session.user.name.charAt(0).toUpperCase()}
               </span>
-              <span className="max-w-24 truncate">
+
+              <span className="max-w-24 truncate text-[#202a22]">
                 {session.user.name}
               </span>
+
               <span aria-hidden="true">⌄</span>
             </summary>
 
-            <div className="dropdown-content z-30 mt-2 w-48 rounded-xl border border-green-100 bg-white p-3 shadow-lg">
+            <div className="dropdown-content z-30 mt-2 w-48 rounded-lg border border-green-100 bg-white p-3 shadow-lg">
               <Link
                 href="/profile"
-                className="mb-3 block rounded-lg p-2 text-sm hover:bg-green-50"
+                className="mb-3 block rounded-md p-2 text-sm text-gray-700 hover:bg-green-50"
               >
                 আমার প্রোফাইল
               </Link>
@@ -69,7 +83,7 @@ const Navbar = () => {
           <div className="flex items-center gap-2">
             <Link
               href="/signin"
-              className="btn btn-ghost btn-sm px-2"
+              className="btn btn-ghost btn-sm text-gray-700"
             >
               সাইন ইন
             </Link>
@@ -81,17 +95,12 @@ const Navbar = () => {
         )}
       </div>
 
-      <nav
-        aria-label="পণ্যের বিভাগ"
-        className="wrap flex items-center gap-1 overflow-x-auto pb-3"
-      >
+      <nav className="wrap bz-category-nav" aria-label="পণ্যের বিভাগ">
         <Link
           href="/"
           aria-current={pathname === "/" ? "page" : undefined}
-          className={`shrink-0 rounded-md px-3 py-2 text-xs sm:text-sm ${
-            pathname === "/"
-              ? "bg-green-100 font-semibold text-brand"
-              : "text-gray-600 hover:bg-green-50"
+          className={`bz-category-link ${
+            pathname === "/" ? "active" : ""
           }`}
         >
           সব পণ্য
@@ -106,11 +115,7 @@ const Navbar = () => {
               key={category.slug}
               href={href}
               aria-current={active ? "page" : undefined}
-              className={`shrink-0 rounded-md px-3 py-2 text-xs sm:text-sm ${
-                active
-                  ? "bg-green-100 font-semibold text-brand"
-                  : "text-gray-600 hover:bg-green-50"
-              }`}
+              className={`bz-category-link ${active ? "active" : ""}`}
             >
               {category.icon} {category.nameBn}
             </Link>

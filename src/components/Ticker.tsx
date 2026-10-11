@@ -18,7 +18,7 @@ const Ticker = ({ products }: Props) => {
   const renderItems = (copy: number) => {
     return (
       <div
-        className="flex shrink-0 items-center"
+        className="bz-ticker-copy"
         aria-hidden={copy === 1 ? true : undefined}
       >
         {products.map((product) => (
@@ -26,7 +26,7 @@ const Ticker = ({ products }: Props) => {
             key={`${copy}-${product.id}`}
             href={`/product/${product.slug}`}
             tabIndex={copy === 1 ? -1 : undefined}
-            className="flex shrink-0 items-center gap-2 px-5 py-2 text-[11px]"
+            className="bz-ticker-item"
           >
             <span>
               {product.image} {product.nameBn}
@@ -65,7 +65,7 @@ const Ticker = ({ products }: Props) => {
 
   return (
     <div
-      className="ticker-window overflow-hidden border-b border-green-100 bg-white"
+      className="bz-ticker"
       aria-label="পণ্যের দামের খবর"
     >
       <div className="ticker-track">

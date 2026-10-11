@@ -1,28 +1,23 @@
 import Link from "next/link";
 
-const notFound = () => {
+const NotFound = () => {
   return (
-    <div className="container-shell not-found-page">
-      <div className="panel not-found-card">
-        <span className="not-found-icon" aria-hidden="true">
-          🛒
-        </span>
+    <div className="wrap flex min-h-[60vh] flex-col items-center justify-center py-16 text-center">
+      <p className="text-7xl font-bold text-brand">৪০৪</p>
 
-        <p className="not-found-code">৪০৪</p>
+      <h1 className="mt-5 text-2xl font-bold">
+        পেজ বা পণ্য পাওয়া যায়নি
+      </h1>
 
-        <h1>পেজ বা পণ্য পাওয়া যায়নি</h1>
+      <p className="mt-3 max-w-md text-sm leading-7 text-gray-500">
+        এই ঠিকানাটি সঠিক নয়, অথবা পণ্যটি বর্তমানে পাওয়া যাচ্ছে না।
+      </p>
 
-        <p>
-          এই ঠিকানাটি সঠিক নয়, অথবা এই বিভাগে বর্তমানে
-          কোনো পণ্য নেই।
-        </p>
-
-        <Link href="/" className="btn btn-primary">
-          হোম পেজে ফিরে যান
-        </Link>
-      </div>
+      <Link href="/" className="btn btn-brand mt-6">
+        হোম পেজে ফিরে যান
+      </Link>
     </div>
   );
 };
 
-export default notFound;
+export default NotFound;

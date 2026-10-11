@@ -5,6 +5,8 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 
 import { authClient } from "@/lib/auth-client";
 
@@ -30,6 +32,11 @@ const AuthForm = ({ mode }: Props) => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (busy) {
+      return;
+    }
+
     setErrorMessage("");
 
     const cleanEmail = email.trim().toLowerCase();
@@ -46,7 +53,7 @@ const AuthForm = ({ mode }: Props) => {
     }
 
     if (isSignup && (!cleanName || cleanName.length > 100)) {
-      reportError("নাম লিখুন, সর্বোচ্চ ১০০ অক্ষর।");
+      reportError("আপনার নাম লিখুন, সর্বোচ্চ ১০০ অক্ষর।");
       return;
     }
 
@@ -103,6 +110,10 @@ const AuthForm = ({ mode }: Props) => {
   const handleSocialLogin = async (
     provider: "google" | "github",
   ) => {
+    if (busy) {
+      return;
+    }
+
     setBusy(true);
     setErrorMessage("");
 
@@ -119,7 +130,7 @@ const AuthForm = ({ mode }: Props) => {
         );
       }
     } catch {
-      reportError("সোশ্যাল লগইনে সমস্যা হয়েছে।");
+      reportError("সোশ্যাল লগইনে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
     } finally {
       setBusy(false);
     }
@@ -127,64 +138,81 @@ const AuthForm = ({ mode }: Props) => {
 
   return (
     <div className="mx-auto w-full max-w-[416px]">
-      <div className="mb-6 text-center">
-        <h1 className="text-2xl font-bold">
+      <div className="mb-5 text-center">
+        <h1 className="text-xl font-bold text-[#202a22]">
           {isSignup ? "অ্যাকাউন্ট তৈরি করুন" : "সাইন ইন"}
         </h1>
 
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-xs leading-6 text-[#6b756c]">
           {isSignup
             ? "বাজারের বিস্তারিত জানতে আপনার অ্যাকাউন্ট তৈরি করুন।"
             : "ইমেইল ও পাসওয়ার্ড দিয়ে আপনার অ্যাকাউন্টে প্রবেশ করুন।"}
         </p>
       </div>
 
-      <div className="panel p-5 sm:p-6">
-        <form onSubmit={handleSubmit} noValidate className="space-y-4">
+      <div className="rounded-lg border border-[#e0e8e1] bg-[#fbfdfb] p-4 sm:p-5">
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+          aria-busy={busy}
+          className="space-y-4"
+        >
           {isSignup && (
             <div>
-              <label htmlFor="name" className="mb-2 block text-sm">
+              <label
+                htmlFor="name"
+                className="mb-1.5 block text-xs font-medium text-[#202a22]"
+              >
                 নাম
               </label>
 
               <input
                 id="name"
+                name="name"
                 type="text"
                 autoComplete="name"
                 maxLength={100}
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                placeholder="আপনার নাম লিখুন"
-                className="control"
+                placeholder="যেমন: রহিম উদ্দিন"
                 disabled={busy}
+                className="block h-10 w-full rounded-md border border-[#e0e8e1] bg-[#fbfdfb] px-3 text-xs text-[#202a22] outline-none placeholder:text-[#899189] focus:border-[#008d3f] focus:ring-2 focus:ring-green-100 disabled:opacity-60"
               />
             </div>
           )}
 
           <div>
-            <label htmlFor="email" className="mb-2 block text-sm">
+            <label
+              htmlFor="email"
+              className="mb-1.5 block text-xs font-medium text-[#202a22]"
+            >
               ইমেইল
             </label>
 
             <input
               id="email"
+              name="email"
               type="email"
               autoComplete="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               placeholder="you@example.com"
-              className="control"
               disabled={busy}
+              className="block h-10 w-full rounded-md border border-[#e0e8e1] bg-[#fbfdfb] px-3 text-xs text-[#202a22] outline-none placeholder:text-[#899189] focus:border-[#008d3f] focus:ring-2 focus:ring-green-100 disabled:opacity-60"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="mb-2 block text-sm">
+            <label
+              htmlFor="password"
+              className="mb-1.5 block text-xs font-medium text-[#202a22]"
+            >
               পাসওয়ার্ড
             </label>
 
             <input
               id="password"
+              name="password"
               type="password"
               autoComplete={
                 isSignup ? "new-password" : "current-password"
@@ -193,8 +221,8 @@ const AuthForm = ({ mode }: Props) => {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               placeholder="কমপক্ষে ৮ অক্ষর"
-              className="control"
               disabled={busy}
+              className="block h-10 w-full rounded-md border border-[#e0e8e1] bg-[#fbfdfb] px-3 text-xs text-[#202a22] outline-none placeholder:text-[#899189] focus:border-[#008d3f] focus:ring-2 focus:ring-green-100 disabled:opacity-60"
             />
           </div>
 
@@ -202,13 +230,14 @@ const AuthForm = ({ mode }: Props) => {
             <div>
               <label
                 htmlFor="confirmPassword"
-                className="mb-2 block text-sm"
+                className="mb-1.5 block text-xs font-medium text-[#202a22]"
               >
                 পাসওয়ার্ড নিশ্চিত করুন
               </label>
 
               <input
                 id="confirmPassword"
+                name="confirmPassword"
                 type="password"
                 autoComplete="new-password"
                 maxLength={128}
@@ -216,15 +245,18 @@ const AuthForm = ({ mode }: Props) => {
                 onChange={(event) =>
                   setConfirmPassword(event.target.value)
                 }
-                placeholder="আবার পাসওয়ার্ড লিখুন"
-                className="control"
+                placeholder="আবার লিখুন"
                 disabled={busy}
+                className="block h-10 w-full rounded-md border border-[#e0e8e1] bg-[#fbfdfb] px-3 text-xs text-[#202a22] outline-none placeholder:text-[#899189] focus:border-[#008d3f] focus:ring-2 focus:ring-green-100 disabled:opacity-60"
               />
             </div>
           )}
 
           {errorMessage && (
-            <p role="alert" className="text-sm text-red-600">
+            <p
+              role="alert"
+              className="rounded-md bg-red-50 px-3 py-2 text-xs leading-5 text-red-600"
+            >
               {errorMessage}
             </p>
           )}
@@ -232,8 +264,15 @@ const AuthForm = ({ mode }: Props) => {
           <button
             type="submit"
             disabled={busy}
-            className="btn btn-brand w-full"
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-[#008d3f] px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-[#007333] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#008d3f] disabled:cursor-not-allowed disabled:opacity-60"
           >
+            {busy && (
+              <span
+                className="loading loading-spinner loading-xs"
+                aria-hidden="true"
+              />
+            )}
+
             {busy
               ? "অপেক্ষা করুন..."
               : isSignup
@@ -242,43 +281,59 @@ const AuthForm = ({ mode }: Props) => {
           </button>
         </form>
 
-        <div className="divider my-5 text-xs text-gray-400">অথবা</div>
+        <div className="my-4 flex items-center gap-3">
+          <span className="h-px flex-1 bg-[#e0e8e1]" />
+          <span className="text-[10px] text-[#899189]">অথবা</span>
+          <span className="h-px flex-1 bg-[#e0e8e1]" />
+        </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
             disabled={busy}
             onClick={() => handleSocialLogin("google")}
-            className="btn h-auto min-h-11 border-gray-200 bg-white py-2 text-xs"
+            className="flex min-h-9 items-center justify-center gap-1.5 whitespace-nowrap rounded-md border border-[#e0e8e1] bg-[#fbfdfb] px-2 py-2 text-[10px] font-medium text-[#202a22] transition hover:bg-green-50 focus-visible:outline-2 focus-visible:outline-[#008d3f] disabled:cursor-not-allowed disabled:opacity-50 sm:text-[11px]"
           >
-            <span className="font-bold text-blue-600">G</span>
-            Google দিয়ে প্রবেশ
+            <FcGoogle
+              className="h-3.5 w-3.5 shrink-0"
+              aria-hidden="true"
+            />
+
+            <span>Google দিয়ে চালিয়ে যান</span>
           </button>
 
           <button
             type="button"
             disabled={busy}
             onClick={() => handleSocialLogin("github")}
-            className="btn h-auto min-h-11 border-gray-200 bg-white py-2 text-xs"
+            className="flex min-h-9 items-center justify-center gap-1.5 whitespace-nowrap rounded-md border border-[#e0e8e1] bg-[#fbfdfb] px-2 py-2 text-[10px] font-medium text-[#202a22] transition hover:bg-green-50 focus-visible:outline-2 focus-visible:outline-[#008d3f] disabled:cursor-not-allowed disabled:opacity-50 sm:text-[11px]"
           >
-            GitHub দিয়ে প্রবেশ
+            <FaGithub
+              className="h-3.5 w-3.5 shrink-0"
+              aria-hidden="true"
+            />
+
+            <span>GitHub দিয়ে চালিয়ে যান</span>
           </button>
         </div>
 
-        <p className="mt-5 text-center text-xs text-gray-500">
+        <p className="mt-4 text-center text-[11px] leading-5 text-[#6b756c]">
           {isSignup ? "ইতোমধ্যে অ্যাকাউন্ট আছে? " : "অ্যাকাউন্ট নেই? "}
 
           <Link
             href={isSignup ? "/signin" : "/signup"}
-            className="font-semibold text-brand hover:underline"
+            className="font-medium text-[#008d3f] hover:underline"
           >
             {isSignup ? "সাইন ইন করুন" : "সাইন আপ করুন"}
           </Link>
         </p>
       </div>
 
-      <div className="mt-6 text-center">
-        <Link href="/" className="text-xs text-gray-500 hover:text-brand">
+      <div className="mt-5 text-center">
+        <Link
+          href="/"
+          className="text-[11px] text-[#6b756c] hover:text-[#008d3f]"
+        >
           ← হোম পেজে ফিরে যান
         </Link>
       </div>

@@ -1,18 +1,41 @@
 import "server-only";
+
 import { betterAuth } from "better-auth";
+import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 
+const uri =
+  process.env.MONGODB_URI || process.env.MONGODB_URL;
+
+if (!uri) {
+  throw new Error("Set MONGODB_URI or MONGODB_URL.");
+}
+
+const globalForMongo = globalThis as typeof globalThis & {
+  bazarMongoClient?: MongoClient;
+};
+
+const client =
+  globalForMongo.bazarMongoClient ?? new MongoClient(uri);
+
+if (process.env.NODE_ENV !== "production") {
+  globalForMongo.bazarMongoClient = client;
+}
+
+const db = client.db(process.env.MONGODB_DB || "bazar_dor");
 
 const baseURL =
-  process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
+  process.env.BETTER_AUTH_URL || "http://localhost:3000";
 
 export const auth = betterAuth({
   appName: "Bazar Dor",
   baseURL,
   secret: process.env.BETTER_AUTH_SECRET,
-
- 
   trustedOrigins: [baseURL],
+
+  database: mongodbAdapter(db, {
+    client,
+  }),
 
   emailAndPassword: {
     enabled: true,
@@ -24,12 +47,13 @@ export const auth = betterAuth({
 
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
     },
+
     github: {
-      clientId: process.env.GITHUB_CLIENT_ID ?? "",
-      clientSecret: process.env.GITHUB_CLIENT_SECRET ?? "",
+      clientId: process.env.GITHUB_CLIENT_ID || "",
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
       scope: ["read:user", "user:email"],
     },
   },

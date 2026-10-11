@@ -5,7 +5,7 @@ import type { Product } from "@/lib/schemas";
 
 const sources = [
   process.env.PRODUCT_API_URL ??
-    "https://api.api-store.workers.dev/api/bazardor",
+    "https://openapi.programming-hero.com/api/bazardor",
   process.env.PRODUCT_API_FALLBACK_URL ??
     "https://api.abcz.workers.dev/api/bazardor",
 ];

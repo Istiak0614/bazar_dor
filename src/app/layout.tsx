@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <html lang="bn">
+    <html lang="bn" data-theme="light">
       <body>
         <Providers />
 
