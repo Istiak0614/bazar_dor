@@ -1,2 +1,112 @@
 @import "tailwindcss";
-@plugin "daisyui";
+
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+@theme {
+  --color-brand: #008d3f;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+
+body {
+  margin: 0;
+  background: #f0f5f1;
+  color: #202a22;
+  font-family: "Noto Sans Bengali", "Nirmala UI", Arial, sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button,
+a,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.wrap {
+  width: min(1120px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.panel {
+  border: 1px solid #dfe8e0;
+  border-radius: 12px;
+  background: #fbfdfb;
+}
+
+.control {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #dce5dd;
+  border-radius: 7px;
+  background: #fbfdfb;
+  padding: 10px 12px;
+  outline: none;
+}
+
+.control:focus {
+  border-color: #008d3f;
+  box-shadow: 0 0 0 3px rgb(0 141 63 / 10%);
+}
+
+.btn-brand {
+  border-color: #008d3f;
+  background: #008d3f;
+  color: white;
+}
+
+.btn-brand:hover {
+  border-color: #007333;
+  background: #007333;
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 70s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .ticker-track {
+    animation: none;
+  }
+
+  .ticker-window {
+    overflow-x: auto;
+  }
+}
