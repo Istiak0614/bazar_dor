@@ -4,8 +4,8 @@ A responsive Bengali market-price application built with Next.js and TypeScript.
 
 ## 🔗 Project Links
 
-- **Live Website:** [ADD_YOUR_DEPLOYED_WEBSITE_URL](https://bazar-dor-tau-eight.vercel.app/)
-- **GitHub Repository:** [ADD_YOUR_GITHUB_REPOSITORY_URL](https://github.com/Istiak0614/bazar_dor)
+- **Live Website:** https://bazar-dor-tau-eight.vercel.app/
+- **GitHub Repository:** https://github.com/Istiak0614/bazar_dor
 
 ## ✨ Features
 
