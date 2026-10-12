@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import ProductCard from "@/components/ProductCard";
 import { getProducts } from "@/lib/api";
+import { bnNumber } from "@/lib/format";
 
 const page = async () => {
   const products = await getProducts();
@@ -20,8 +21,11 @@ const page = async () => {
       <Hero />
 
       <section className="mt-8">
-        <h2 className="mb-4 text-lg font-bold">
-          আজ দাম বেড়েছে <span className="text-green-700">▲</span>
+        <h2 className="mb-4 flex items-center gap-2 text-lg font-bold">
+          <span className="text-sm text-red-600" aria-hidden="true">
+            ▲
+          </span>
+          আজ দাম বেড়েছে
         </h2>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -38,8 +42,11 @@ const page = async () => {
       </section>
 
       <section className="mt-8">
-        <h2 className="mb-4 text-lg font-bold">
-          আজ দাম কমেছে <span className="text-red-600">▼</span>
+        <h2 className="mb-4 flex items-center gap-2 text-lg font-bold">
+          <span className="text-sm text-green-700" aria-hidden="true">
+            ▼
+          </span>
+          আজ দাম কমেছে
         </h2>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -56,13 +63,13 @@ const page = async () => {
       </section>
 
       <section id="সব-পণ্য" className="mb-6 mt-8">
-        <h2 className="text-xl font-bold">সব পণ্য</h2>
+        <h2 className="text-lg font-bold">সব পণ্য</h2>
 
-        <p className="mb-5 mt-2 text-sm text-gray-500">
-          নিত্যপ্রয়োজনীয় পণ্যের আজকের দাম এবং পরিবর্তন।
+        <p className="mb-4 mt-1 text-xs text-[#6b756c]">
+          মোট {bnNumber(products.length)}টি পণ্য দেখানো হচ্ছে
         </p>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

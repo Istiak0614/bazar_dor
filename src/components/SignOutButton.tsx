@@ -5,7 +5,13 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 
-const SignOutButton = () => {
+type Props = {
+  // "menu" = red text inside the user dropdown
+  // "outline" = red outlined button on the profile page
+  variant?: "menu" | "outline";
+};
+
+const SignOutButton = ({ variant = "outline" }: Props) => {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
 
@@ -30,13 +36,19 @@ const SignOutButton = () => {
     }
   };
 
+  const className =
+    variant === "menu"
+      ? "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-xs text-red-600 hover:bg-red-50 disabled:opacity-60"
+      : "inline-flex items-center gap-1.5 rounded-md border border-red-300 bg-white px-3 py-1.5 text-xs text-red-600 transition hover:bg-red-50 disabled:opacity-60";
+
   return (
     <button
       type="button"
       onClick={handleSignOut}
       disabled={busy}
-      className="btn btn-sm border-red-200 bg-white text-red-600"
+      className={className}
     >
+      <span aria-hidden="true">↩</span>
       {busy ? "অপেক্ষা করুন..." : "সাইন আউট"}
     </button>
   );

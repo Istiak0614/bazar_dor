@@ -9,6 +9,7 @@ import { categories } from "@/lib/categories";
 import { banglaDate } from "@/lib/format";
 import ReservedImage from "@/components/ReservedImage";
 import SignOutButton from "@/components/SignOutButton";
+import UserAvatar from "@/components/UserAvatar";
 
 const subscribeDate = () => {
   return () => {};
@@ -55,40 +56,58 @@ const Navbar = () => {
         {isPending ? (
           <div className="skeleton h-8 w-24" />
         ) : session ? (
-          <details className="dropdown dropdown-end">
-            <summary className="btn btn-ghost btn-sm">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-green-100 text-brand">
-                {session.user.name.charAt(0).toUpperCase()}
+          <details key={pathname} className="dropdown dropdown-end">
+            <summary className="flex cursor-pointer list-none items-center gap-2 rounded-md px-2 py-1 hover:bg-green-50 [&::-webkit-details-marker]:hidden">
+              <UserAvatar
+                name={session.user.name}
+                image={session.user.image}
+                size={28}
+              />
+
+              <span className="max-w-24 truncate text-xs font-medium text-[#202a22]">
+                {session.user.name.split(" ")[0]}
               </span>
 
-              <span className="max-w-24 truncate text-[#202a22]">
-                {session.user.name}
+              <span aria-hidden="true" className="text-[8px] text-[#6b756c]">
+                ▾
               </span>
-
-              <span aria-hidden="true">⌄</span>
             </summary>
 
-            <div className="dropdown-content z-30 mt-2 w-48 rounded-lg border border-green-100 bg-white p-3 shadow-lg">
+            <div className="dropdown-content z-30 mt-2 w-56 rounded-lg border border-[#e0e8e1] bg-[#fbfdfb] p-3 shadow-lg">
+              <div className="border-b border-[#e0e8e1] px-2 pb-2">
+                <p className="truncate text-xs font-semibold text-[#202a22]">
+                  {session.user.name}
+                </p>
+
+                <p className="mt-0.5 truncate text-[10px] text-[#6b756c]">
+                  {session.user.email}
+                </p>
+              </div>
+
               <Link
                 href="/profile"
-                className="mb-3 block rounded-md p-2 text-sm text-gray-700 hover:bg-green-50"
+                className="mt-2 flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-[#202a22] hover:bg-green-50"
               >
+                <span aria-hidden="true">👤</span>
                 আমার প্রোফাইল
               </Link>
 
-              <SignOutButton />
+              <SignOutButton variant="menu" />
             </div>
           </details>
         ) : (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <Link
               href="/signin"
-              className="btn btn-ghost btn-sm text-gray-700"
+              className="px-2 py-1 text-xs font-medium text-[#202a22] hover:text-[#008d3f]"
             >
               সাইন ইন
             </Link>
 
-            <Link href="/signup" className="btn btn-brand btn-sm">
+            <Link
+              href="/signup"
+              className="rounded-md bg-[#008d3f] px-4 py-2 text-xs font-semibold text-white shadow-md transition hover:bg-[#007333]"
+            >
               সাইন আপ
             </Link>
           </div>
@@ -96,16 +115,6 @@ const Navbar = () => {
       </div>
 
       <nav className="wrap bz-category-nav" aria-label="পণ্যের বিভাগ">
-        <Link
-          href="/"
-          aria-current={pathname === "/" ? "page" : undefined}
-          className={`bz-category-link ${
-            pathname === "/" ? "active" : ""
-          }`}
-        >
-          সব পণ্য
-        </Link>
-
         {categories.map((category) => {
           const href = `/category/${category.slug}`;
           const active = pathname === href;
@@ -117,7 +126,8 @@ const Navbar = () => {
               aria-current={active ? "page" : undefined}
               className={`bz-category-link ${active ? "active" : ""}`}
             >
-              {category.icon} {category.nameBn}
+              <span aria-hidden="true">{category.icon}</span>{" "}
+              {category.nameBn}
             </Link>
           );
         })}

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
@@ -10,9 +9,11 @@ import { authClient } from "@/lib/auth-client";
 
 type Props = {
   initialName: string;
+  // Where to go after a successful update (none = stay on the page).
+  redirectTo?: string;
 };
 
-const ProfileUpdateForm = ({ initialName }: Props) => {
+const ProfileUpdateForm = ({ initialName, redirectTo }: Props) => {
   const router = useRouter();
   const [name, setName] = useState(initialName);
   const [busy, setBusy] = useState(false);
@@ -48,7 +49,11 @@ const ProfileUpdateForm = ({ initialName }: Props) => {
       }
 
       toast.success("আপনার তথ্য আপডেট হয়েছে।");
-      router.replace("/profile");
+
+      if (redirectTo) {
+        router.replace(redirectTo);
+      }
+
       router.refresh();
     } catch {
       const message = "সংযোগ সমস্যা হয়েছে। আবার চেষ্টা করুন।";
@@ -60,8 +65,11 @@ const ProfileUpdateForm = ({ initialName }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="panel mt-6 p-6">
-      <label htmlFor="profileName" className="mb-2 block text-sm">
+    <form onSubmit={handleSubmit} noValidate className="mt-4 sm:px-3">
+      <label
+        htmlFor="profileName"
+        className="mb-1.5 block text-xs font-medium text-[#202a22]"
+      >
         নাম
       </label>
 
@@ -73,11 +81,11 @@ const ProfileUpdateForm = ({ initialName }: Props) => {
         value={name}
         onChange={(event) => setName(event.target.value)}
         disabled={busy}
-        className="control"
+        className="block h-10 w-full rounded-md border border-[#e0e8e1] bg-[#fbfdfb] px-3 text-xs text-[#202a22] outline-none focus:border-[#008d3f] focus:ring-2 focus:ring-green-100 disabled:opacity-60"
       />
 
       {errorMessage && (
-        <p role="alert" className="mt-3 text-sm text-red-600">
+        <p role="alert" className="mt-2 text-xs text-red-600">
           {errorMessage}
         </p>
       )}
@@ -85,17 +93,10 @@ const ProfileUpdateForm = ({ initialName }: Props) => {
       <button
         type="submit"
         disabled={busy}
-        className="btn btn-brand mt-5 w-full"
+        className="mt-3 flex h-10 w-full items-center justify-center rounded-md bg-[#008d3f] text-xs font-semibold text-white shadow-md transition hover:bg-[#007333] disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {busy ? "আপডেট হচ্ছে..." : "তথ্য আপডেট করুন"}
+        {busy ? "আপডেট হচ্ছে..." : "আপডেট"}
       </button>
-
-      <Link
-        href="/profile"
-        className="mt-4 block text-center text-sm text-gray-500 hover:text-brand"
-      >
-        প্রোফাইলে ফিরে যান
-      </Link>
     </form>
   );
 };

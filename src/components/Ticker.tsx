@@ -42,9 +42,9 @@ const Ticker = ({ products }: Props) => {
             <span
               className={
                 product.change.dir === "up"
-                  ? "text-green-700"
+                  ? "text-red-600"
                   : product.change.dir === "down"
-                    ? "text-red-600"
+                    ? "text-green-700"
                     : "text-gray-500"
               }
             >
@@ -55,8 +55,6 @@ const Ticker = ({ products }: Props) => {
                   : "—"}{" "}
               {bnPercent(product.change.pct)}%
             </span>
-
-            <span className="ml-3 text-gray-300">•</span>
           </Link>
         ))}
       </div>

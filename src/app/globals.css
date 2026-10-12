@@ -120,8 +120,8 @@ button:disabled {
 }
 
 .bz-category-link.active {
-  background: #dff3e4;
-  color: #008d3f;
+  background: #008d3f;
+  color: #fff;
   font-weight: 600;
 }
 
@@ -154,7 +154,7 @@ button:disabled {
 
 .bz-ticker {
   overflow: hidden;
-  background: #fff;
+  background: #fbfdfb;
   border-bottom: 1px solid #e0e8e1;
 }
 
@@ -177,9 +177,10 @@ button:disabled {
   align-items: center;
   gap: 7px;
   padding: 9px 18px;
-  font-size: 11px;
+  font-size: 13px;
   white-space: nowrap;
-  color: #526052;
+  color: #202a22;
+  border-right: 1px solid #e0e8e1;
 }
 
 .ticker-track:hover {

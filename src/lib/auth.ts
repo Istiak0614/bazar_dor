@@ -27,14 +27,41 @@ const db = client.db(process.env.MONGODB_DB || "bazar_dor");
 const baseURL =
   process.env.BETTER_AUTH_URL || "http://localhost:3000";
 
+const socialProviders = {
+  ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+    ? {
+        google: {
+          clientId: process.env.GOOGLE_CLIENT_ID,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        },
+      }
+    : {}),
+  ...(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET
+    ? {
+        github: {
+          clientId: process.env.GITHUB_CLIENT_ID,
+          clientSecret: process.env.GITHUB_CLIENT_SECRET,
+          scope: ["read:user", "user:email"],
+        },
+      }
+    : {}),
+};
+
 export const auth = betterAuth({
   appName: "Bazar Dor",
   baseURL,
   secret: process.env.BETTER_AUTH_SECRET,
-  trustedOrigins: [baseURL],
+  trustedOrigins: [
+    baseURL,
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+  ],
 
+  // transaction: false -> works on a normal (standalone) MongoDB.
+  // Transactions need a replica set (Atlas has one, local mongod does not).
   database: mongodbAdapter(db, {
     client,
+    transaction: false,
   }),
 
   emailAndPassword: {
@@ -45,16 +72,5 @@ export const auth = betterAuth({
     maxPasswordLength: 128,
   },
 
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-    },
-
-    github: {
-      clientId: process.env.GITHUB_CLIENT_ID || "",
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
-      scope: ["read:user", "user:email"],
-    },
-  },
+  socialProviders,
 });

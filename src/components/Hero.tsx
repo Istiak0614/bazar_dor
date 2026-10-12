@@ -1,11 +1,12 @@
 import ReservedImage from "@/components/ReservedImage";
+import { banglaDate } from "@/lib/format";
 
 const Hero = () => {
   return (
     <section className="panel bz-hero">
       <div>
         <span className="inline-block rounded-full bg-green-100 px-3 py-1 text-[11px] text-green-700">
-          প্রতিদিনের বাজার, এক নজরে
+          {banglaDate()}
         </span>
 
         <h1 className="bz-hero-title">
@@ -18,7 +19,7 @@ const Hero = () => {
           পরিবর্তন এক জায়গায়।
         </p>
 
-        <a href="#সব-পণ্য" className="btn btn-brand btn-sm mt-5">
+        <a href="#সব-পণ্য" className="mt-5 inline-flex rounded-md bg-[#008d3f] px-4 py-2.5 text-xs font-semibold text-white shadow-md transition hover:bg-[#007333]">
           সব পণ্য দেখুন
         </a>
       </div>

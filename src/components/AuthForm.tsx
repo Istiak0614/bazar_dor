@@ -139,18 +139,18 @@ const AuthForm = ({ mode }: Props) => {
   return (
     <div className="mx-auto w-full max-w-[416px]">
       <div className="mb-5 text-center">
-        <h1 className="text-xl font-bold text-[#202a22]">
+        <h1 className="text-2xl font-bold text-[#202a22]">
           {isSignup ? "অ্যাকাউন্ট তৈরি করুন" : "সাইন ইন"}
         </h1>
 
         <p className="mt-2 text-xs leading-6 text-[#6b756c]">
           {isSignup
-            ? "বাজারের বিস্তারিত জানতে আপনার অ্যাকাউন্ট তৈরি করুন।"
-            : "ইমেইল ও পাসওয়ার্ড দিয়ে আপনার অ্যাকাউন্টে প্রবেশ করুন।"}
+            ? "বিনা খরচে সাইন আপ করে সব বিস্তারিত দাম দেখুন।"
+            : "বিস্তারিত দাম, বাজার তুলনা ও প্রোফাইল দেখতে অ্যাকাউন্টে ঢুকুন।"}
         </p>
       </div>
 
-      <div className="rounded-lg border border-[#e0e8e1] bg-[#fbfdfb] p-4 sm:p-5">
+      <div className="rounded-xl border border-[#e0e8e1] bg-[#fbfdfb] p-4 shadow-sm sm:p-5">
         <form
           onSubmit={handleSubmit}
           noValidate
@@ -264,7 +264,7 @@ const AuthForm = ({ mode }: Props) => {
           <button
             type="submit"
             disabled={busy}
-            className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-[#008d3f] px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-[#007333] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#008d3f] disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-[#008d3f] px-3 text-xs font-semibold text-white shadow-md transition hover:bg-[#007333] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#008d3f] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {busy && (
               <span

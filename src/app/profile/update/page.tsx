@@ -13,7 +13,12 @@ const page = async () => {
           নিচের ফর্ম থেকে আপনার নাম পরিবর্তন করুন।
         </p>
 
-        <ProfileUpdateForm initialName={session.user.name} />
+        <div className="panel mt-6 p-5">
+          <ProfileUpdateForm
+            initialName={session.user.name}
+            redirectTo="/profile"
+          />
+        </div>
       </section>
     </div>
   );

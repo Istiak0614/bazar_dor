@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getProducts } from "@/lib/api";
 import { getCategory } from "@/lib/categories";
+import { bnNumber } from "@/lib/format";
 import CategoryProducts from "@/components/CategoryProducts";
 
 type Props = {
@@ -23,13 +24,24 @@ const page = async ({ params }: Props) => {
 
   return (
     <div className="wrap py-8">
-      <h1 className="text-2xl font-bold">
-        {category.icon} {category.nameBn}
-      </h1>
+      <section className="panel flex items-center gap-4 p-5">
+        <span
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#f0f4ee] text-3xl"
+          aria-hidden="true"
+        >
+          {category.icon}
+        </span>
 
-      <p className="mb-6 mt-2 text-sm text-gray-500">
-        এই বিভাগের পণ্যের আজকের বাজারদর।
-      </p>
+        <div>
+          <h1 className="text-2xl font-bold text-[#202a22]">
+            {category.nameBn}
+          </h1>
+
+          <p className="mt-1 text-xs text-[#6b756c]">
+            {bnNumber(products.length)}টি পণ্যের আজকের দাম ও পরিবর্তন
+          </p>
+        </div>
+      </section>
 
       <CategoryProducts products={products} />
     </div>
