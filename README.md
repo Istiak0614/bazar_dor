@@ -4,8 +4,8 @@ A responsive Bengali market-price application built with Next.js and TypeScript.
 
 ## 🔗 Project Links
 
-- **Live Website:** ADD_YOUR_DEPLOYED_WEBSITE_URL
-- **GitHub Repository:** ADD_YOUR_GITHUB_REPOSITORY_URL
+- **Live Website:** [ADD_YOUR_DEPLOYED_WEBSITE_URL](https://bazar-dor-tau-eight.vercel.app/)
+- **GitHub Repository:** [ADD_YOUR_GITHUB_REPOSITORY_URL](https://github.com/Istiak0614/bazar_dor)
 
 ## ✨ Features
 
@@ -329,8 +329,8 @@ The components reserve space for these images and display a fallback if loading 
 6. Update the OAuth callback URLs:
 
    ```text
-   https://YOUR_DOMAIN/api/auth/callback/google
-   http://localhost:3000/api/auth/callback/github
+   https:https://bazar-dor-tau-eight.vercel.app/api/auth/callback/google
+   http:https://bazar-dor-tau-eight.vercel.app/api/auth/callback/github
    ```
 
 7. Update Google's authorized JavaScript origin to the deployed website URL.
